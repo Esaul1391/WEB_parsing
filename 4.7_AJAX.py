@@ -18,15 +18,15 @@
 #
 # Давайте напишем скрипт и передадим с запросом ключ requested-with': 'XMLHttpRequest' и стандартный юзер-агент.
 
-import requests
-headers = {
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36',
-    'x-requested-with': 'XMLHttpRequest'
-}
-
-url = "https://bitality.cc/Home/GetSum?GiveName=Ethereum&GetName=Bitcoin&Sum=4.1895414&Direction=0"
-response = requests.get(url=url, headers=headers).json()
-print(response)
+# import requests
+# headers = {
+#     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36',
+#     'x-requested-with': 'XMLHttpRequest'
+# }
+#
+# url = "https://bitality.cc/Home/GetSum?GiveName=Ethereum&GetName=Bitcoin&Sum=4.1895414&Direction=0"
+# response = requests.get(url=url, headers=headers).json()
+# print(response)
 
 # Передача параметров с AJAX запросом
 # В прошлом уроке мы получали данные о цене с крипто-обменника, делали это по прямой ссылке на паре ETH-BTC.
@@ -64,7 +64,7 @@ print(response)
 # url = "https://bitality.cc/Home/GetSum?"
 # response = requests.get(url=url, headers=headers, params=data).json()
 # print(response)
-#
+
 # >>> {'giveSum': '100', 'getSum': '332.11979261'}
 # Добавили словарь data, в котором мы можем хранить и передавать с запросом те данные, которые нас интересуют. Подобный запрос формирует такую ссылку:
 #
