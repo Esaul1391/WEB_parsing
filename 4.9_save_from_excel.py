@@ -1,4 +1,3 @@
-
 #           CSV
 
 # CSV (Comma Separated Values) - «значения, разделенные запятыми». Это один из самых
@@ -69,6 +68,45 @@
 
 #           part 3
 
+# import csv
+# import requests
+# from bs4 import BeautifulSoup
+#
+# # 1 ------------------------------------------------------
+# with open('res.csv', 'w', encoding='utf-8-sig', newline='') as file:
+#     writer = csv.writer(file, delimiter=';')
+#     writer.writerow([
+#         'Наименование', 'Цена', 'Бренд', 'Тип', 'Подключение', 'Игровая'])
+# # 1 ------------------------------------------------------
+#
+# # 2 ------------------------------------------------------
+# url = 'http://parsinger.ru/html/index3_page_2.html'
+#
+# response = requests.get(url=url)
+# response.encoding = 'utf-8'
+# soup = BeautifulSoup(response.text, 'lxml')
+# # 2 ------------------------------------------------------
+#
+# # 3 ------------------------------------------------------
+# name = [x.text.strip() for x in soup.find_all('a', class_='name_item')]
+# description = [x.text.split('\n') for x in soup.find_all('div', class_='description')]
+# price = [x.text for x in soup.find_all('p', class_='price')]
+# # 3 ------------------------------------------------------
+#
+# # 4------------------------------------------------------
+#
+# for item, price, descr in zip(name, price, description):
+#     flatten = item, price, *[x.split(':')[1].strip() for x in descr if x]
+#
+#     file = open('res.csv', 'a', encoding='utf-8-sig', newline='')
+#     writer = csv.writer(file, delimiter=';')
+#     writer.writerow(flatten)
+# file.close()
+# print('Файл res.csv создан')
+
+
+#           task 4
+
 import csv
 import requests
 from bs4 import BeautifulSoup
@@ -78,23 +116,25 @@ with open('res.csv', 'w', encoding='utf-8-sig', newline='') as file:
     writer = csv.writer(file, delimiter=';')
     writer.writerow([
         'Наименование', 'Цена', 'Бренд', 'Тип', 'Подключение', 'Игровая'])
-# 1 ------------------------------------------------------
 
-# 2 ------------------------------------------------------
-url = 'http://parsinger.ru/html/index3_page_2.html'
+name = []
+description = []
+price = []
 
-response = requests.get(url=url)
-response.encoding = 'utf-8'
-soup = BeautifulSoup(response.text, 'lxml')
-# 2 ------------------------------------------------------
-
-# 3 ------------------------------------------------------
-name = [x.text.strip() for x in soup.find_all('a', class_='name_item')]
-description = [x.text.split('\n') for x in soup.find_all('div', class_='description')]
-price = [x.text for x in soup.find_all('p', class_='price')]
-# 3 ------------------------------------------------------
-
-# 4------------------------------------------------------
+for i in range(1, 4):
+    url = f"https://parsinger.ru/html/index4_page_{i}.html"
+    response = requests.get(url=url)
+    response.encoding = 'utf-8'
+    soup = BeautifulSoup(response.text, 'lxml')
+    # name = [x.text.strip() for x in soup.find_all('a', class_='name_item')]
+    for x in soup.find_all('a', class_='name_item'):
+        name.append(x.text.strip())
+    # description = [x.text.split('\n') for x in soup.find_all('div', class_='description')]
+    for x in soup.find_all('div', class_='description'):
+        description.append(x.text.split('\n'))
+    #price = [x.text for x in soup.find_all('p', class_='price')]
+    for x in soup.find_all('p', class_='price'):
+        price.append(x.text)
 
 for item, price, descr in zip(name, price, description):
     flatten = item, price, *[x.split(':')[1].strip() for x in descr if x]
@@ -104,3 +144,26 @@ for item, price, descr in zip(name, price, description):
     writer.writerow(flatten)
 file.close()
 print('Файл res.csv создан')
+#     url_chunks = [tag['href'] for tag in soup.find('div', {'class': 'pagen'}).find_all('a')]
+#
+#     print(url_chunks)
+# # find articles of products on pages of website
+#
+#
+#     for c in url_chunks:
+#         response = requests.get(url=f'https://parsinger.ru/html/{c}')
+#         response.encoding = 'utf-8'
+#         soup = BeautifulSoup(response.text, 'lxml')
+#         mouses = [tag['href'] for tag in soup.find_all('a', {'class': 'name_item'})]
+#         print(mouses)
+#         for link in mouses:
+#             response = requests.get(url=f'https://parsinger.ru/html/{link}')
+#             response.encoding = 'utf-8'
+#             soup = BeautifulSoup(response.text, 'lxml')
+#             stock = int(soup.find('span', {'id': 'in_stock'}).text.split()[-1])
+#             price = int(soup.find('span', {'id': 'price'}).text.split()[0])
+#             total += stock * price
+#             print(total)
+#         # print(int(soup.find('p', {'class': 'article'}).text.split()[1]))
+# #
+# print(total)
