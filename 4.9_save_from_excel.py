@@ -264,27 +264,9 @@ for i in range(1, 33):
     price.append(soup.find('span', id='price').text)
     price.append(soup.find('span', id='old_price').text)
     url_.append(url)
-    # # price = [x.text for x in soup.find_all('p', class_='price')]
-    # for x in soup.find_all('p', class_='price'):
-    #     price.append(x.text)
-    # for j in link:
-    #     url = f"https://parsinger.ru/html/{link}"
-    #
-    #     response = requests.get(url=url)
-    #     response.encoding = 'utf-8'
-    #     soup = BeautifulSoup(response.text, 'lxml')
-    # name = [x.text.strip() for x in soup.find_all('a', class_='name_item')]
-    #     for x in soup.find_all('a', class_='name_item'):
-    #         name.append(x.text.strip())
-    #         print(x.text.strip())
-    #     description = [x.text.split('\n') for x in soup.find_all('div', class_='description')]
-    #     for x in soup.find_all('div', class_='description'):
-    #         description.append(x.text.split('\n'))
-    # # price = [x.text for x in soup.find_all('p', class_='price')]
-    #     for x in soup.find_all('p', class_='price'):
-    #         price.append(x.text)
+
 print(name)
-# print(price)
+
 
 for item, price, url_ in zip(name, price, url_):
     flatten = item, price, url_
