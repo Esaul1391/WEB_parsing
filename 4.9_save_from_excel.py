@@ -147,65 +147,147 @@
 
 #               task 5
 
+# import csv
+# import requests
+# from bs4 import BeautifulSoup
+#
+# with open('res.csv', 'w', encoding='utf-8-sig', newline='') as file:
+#     writer = csv.writer(file, delimiter=';')
+#     writer.writerow([
+#         'Наименование', 'Цена', 'Бренд', 'Тип', 'Подключение', 'Игровая'])
+#
+# name = []
+# description = []
+# price = []
+#
+# for i in range(1, 6):
+#     url = f"https://parsinger.ru/html/index{i}_page_1.html"
+#     response = requests.get(url=url)
+#     response.encoding = 'utf-8'
+#     soup = BeautifulSoup(response.text, 'lxml')
+#     url_chunks = [tag['href'] for tag in soup.find('div', {'class': 'pagen'}).find_all('a')]
+#
+#     print(url_chunks)
+#     # find articles of products on pages of website
+#
+#     for c in url_chunks:
+#         url = f'https://parsinger.ru/html/{c}'
+#         response = requests.get(url=url)
+#         print(url)
+#         response.encoding = 'utf-8'
+#         soup = BeautifulSoup(response.text, 'lxml')
+#         link = [tag['href'] for tag in soup.find_all('a', {'class': 'name_item'})]
+#         for x in soup.find_all('a', class_='name_item'):
+#             name.append(x.text.strip())
+#         #description = [x.text.split('\n') for x in soup.find_all('div', class_='description')]
+#         for x in soup.find_all('div', class_='description'):
+#             description.append(x.text.split('\n'))
+#         # price = [x.text for x in soup.find_all('p', class_='price')]
+#         for x in soup.find_all('p', class_='price'):
+#             price.append(x.text)
+#         # for j in link:
+#         #     url = f"https://parsinger.ru/html/{link}"
+#         #
+#         #     response = requests.get(url=url)
+#         #     response.encoding = 'utf-8'
+#         #     soup = BeautifulSoup(response.text, 'lxml')
+#         # name = [x.text.strip() for x in soup.find_all('a', class_='name_item')]
+#         #     for x in soup.find_all('a', class_='name_item'):
+#         #         name.append(x.text.strip())
+#         #         print(x.text.strip())
+#         #     description = [x.text.split('\n') for x in soup.find_all('div', class_='description')]
+#         #     for x in soup.find_all('div', class_='description'):
+#         #         description.append(x.text.split('\n'))
+#         # # price = [x.text for x in soup.find_all('p', class_='price')]
+#         #     for x in soup.find_all('p', class_='price'):
+#         #         price.append(x.text)
+# print(name)
+# print(price)
+# print(description)
+# for item, price, descr in zip(name, price, description):
+#     flatten = item, price, *[x.split(':')[1].strip() for x in descr if x]
+#
+#     file = open('res.csv', 'a', encoding='utf-8-sig', newline='')
+#     writer = csv.writer(file, delimiter=';')
+#     writer.writerow(flatten)
+# file.close()
+# print('Файл res.csv создан')
+
+
+#           task6
+
 import csv
 import requests
 from bs4 import BeautifulSoup
 
+
 with open('res.csv', 'w', encoding='utf-8-sig', newline='') as file:
     writer = csv.writer(file, delimiter=';')
+    # writer.writerow([
+    #     'Наименование', 'Цена', 'Бренд', 'Тип', 'Подключение', 'Игровая'])
     writer.writerow([
-        'Наименование', 'Цена', 'Бренд', 'Тип', 'Подключение', 'Игровая'])
+        'Наименование', 'Артикул', 'Бренд', 'Модель', 'Тип',
+        'Технология экрана', 'Материал корпуса', 'Материал браслета',
+        'Размер', 'Сайт производителя', 'Наличие', 'Цена', 'Старая цена',
+        'Ссылка на карточку с товаром'])
 
 name = []
-description = []
+article = []
+brand = []
+model = []
+type_ = []
+scrin_t = []
+material_frame = []
+material_bracer = []
+size = []
+site_ = []
+availability = []
 price = []
-
-for i in range(1, 6):
-    url = f"https://parsinger.ru/html/index{i}_page_1.html"
+old_price = []
+url_ = []
+for i in range(1, 33):
+    url = f'https://parsinger.ru/html/watch/1/1_{i}.html'
     response = requests.get(url=url)
     response.encoding = 'utf-8'
     soup = BeautifulSoup(response.text, 'lxml')
-    url_chunks = [tag['href'] for tag in soup.find('div', {'class': 'pagen'}).find_all('a')]
-
-    print(url_chunks)
-    # find articles of products on pages of website
-
-    for c in url_chunks:
-        url = f'https://parsinger.ru/html/{c}'
-        response = requests.get(url=url)
-        print(url)
-        response.encoding = 'utf-8'
-        soup = BeautifulSoup(response.text, 'lxml')
-        link = [tag['href'] for tag in soup.find_all('a', {'class': 'name_item'})]
-        for x in soup.find_all('a', class_='name_item'):
-            name.append(x.text.strip())
-        #description = [x.text.split('\n') for x in soup.find_all('div', class_='description')]
-        for x in soup.find_all('div', class_='description'):
-            description.append(x.text.split('\n'))
-        # price = [x.text for x in soup.find_all('p', class_='price')]
-        for x in soup.find_all('p', class_='price'):
-            price.append(x.text)
-        # for j in link:
-        #     url = f"https://parsinger.ru/html/{link}"
-        #
-        #     response = requests.get(url=url)
-        #     response.encoding = 'utf-8'
-        #     soup = BeautifulSoup(response.text, 'lxml')
-        # name = [x.text.strip() for x in soup.find_all('a', class_='name_item')]
-        #     for x in soup.find_all('a', class_='name_item'):
-        #         name.append(x.text.strip())
-        #         print(x.text.strip())
-        #     description = [x.text.split('\n') for x in soup.find_all('div', class_='description')]
-        #     for x in soup.find_all('div', class_='description'):
-        #         description.append(x.text.split('\n'))
-        # # price = [x.text for x in soup.find_all('p', class_='price')]
-        #     for x in soup.find_all('p', class_='price'):
-        #         price.append(x.text)
+    name.append(soup.find('p', id='p_header').text.split('\n'))
+    article.append(int(''.join(filter(str.isdigit, str(soup.find('p', class_='article').text.split('\n'))))))
+    brand.append(soup.find('li', id='brand').text.split(' ')[1])
+    model.append(soup.find('li', id='model').text.split(' ')[1])
+    type_.append(soup.find('li', id='type').text.split(' ')[1])
+    scrin_t.append(soup.find('li', id='display').text.split(' ')[1])
+    material_frame.append(soup.find('li', id='material_frame').text.split(' ')[1])
+    material_bracer.append(soup.find('li', id='material_bracer').text.split(' ')[1])
+    size.append(soup.find('li', id='size').text.split(' ')[1])
+    site_.append(soup.find('li', id='site').text.split(' ')[1])
+    availability.append(soup.find('span', id='in_stock').text.split(' ')[1])
+    price.append(soup.find('span', id='price').text)
+    price.append(soup.find('span', id='old_price').text)
+    url_.append(url)
+    # # price = [x.text for x in soup.find_all('p', class_='price')]
+    # for x in soup.find_all('p', class_='price'):
+    #     price.append(x.text)
+    # for j in link:
+    #     url = f"https://parsinger.ru/html/{link}"
+    #
+    #     response = requests.get(url=url)
+    #     response.encoding = 'utf-8'
+    #     soup = BeautifulSoup(response.text, 'lxml')
+    # name = [x.text.strip() for x in soup.find_all('a', class_='name_item')]
+    #     for x in soup.find_all('a', class_='name_item'):
+    #         name.append(x.text.strip())
+    #         print(x.text.strip())
+    #     description = [x.text.split('\n') for x in soup.find_all('div', class_='description')]
+    #     for x in soup.find_all('div', class_='description'):
+    #         description.append(x.text.split('\n'))
+    # # price = [x.text for x in soup.find_all('p', class_='price')]
+    #     for x in soup.find_all('p', class_='price'):
+    #         price.append(x.text)
 print(name)
-print(price)
-print(description)
-for item, price, descr in zip(name, price, description):
-    flatten = item, price, *[x.split(':')[1].strip() for x in descr if x]
+# print(price)
+
+for item, price, url_ in zip(name, price, url_):
+    flatten = item, price, url_
 
     file = open('res.csv', 'a', encoding='utf-8-sig', newline='')
     writer = csv.writer(file, delimiter=';')
