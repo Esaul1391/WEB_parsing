@@ -62,7 +62,6 @@
 #     print(a.get_attribute('href'))
 
 
-
 #           Перенос профиля с основного браузера Chrome в браузер под управлением Selenium
 #           transferring a profile from one chrome browser to a browser selenium
 
