@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 #
 # #           task1
 #
@@ -111,7 +111,7 @@ from selenium import webdriver
 #             print(cookie['expiry'])
 
 
-=======
+
 
 #           task1
 
@@ -133,4 +133,4 @@ with webdriver.Chrome() as browser:
     # cl = browser.find_element(By.CLASS_NAME, 'btn')
     # cl.click()
     # time.sleep(8)
->>>>>>> origin/main
+

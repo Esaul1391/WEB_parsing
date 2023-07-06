@@ -103,5 +103,239 @@
 #                     список всех элементов с заданным именем name="container".
 
 
+#           task2
+
+import time
+# from selenium import webdriver
+# from selenium.webdriver.common.by import By
+#
+# with webdriver.Chrome() as browser:
+#     browser.get('https://parsinger.ru/scroll/4/index.html')
+#     button = browser.find_elements(By.CLASS_NAME, "btn")
+#     res = []
+#     for bt in range(len(button)):
+#         browser.execute_script("return arguments[0].scrollIntoView(true);", button[bt])
+#         button[bt].click()
+#         res1 = browser.find_element(By.ID, "result").text
+#         res.append(int(res1))
+# print(sum(res))
+    #links = browser.find_elements(By.CSS_SELECTOR, '.text p:nth-child(2)')
+    # print(len(button))
+    # for i in range(len(button)):
+    #     button[i].click()
+    # res = browser.find_element(By.CLASS_NAME, "btn").click()
+    # res1 = browser.find_element(By.ID, "result")
+    # time.sleep(20)
+    # print(res1.text)
 
                     #method 2
+#           use class Key
+
+# from selenium.webdriver import Keys
+#
+# или
+#
+# from selenium.webdriver.common.keys import Keys
+
+
+
+# import time
+# from selenium.webdriver import Keys
+# from selenium import webdriver
+# from selenium.webdriver.common.by import By
+#
+# with webdriver.Chrome() as browser:
+#     browser.get('http://parsinger.ru/scroll/1/')
+#     tag_p = browser.find_element(By.TAG_NAME, 'input').send_keys(Keys.DOWN)
+#     time.sleep(10)
+# На открывшемся сайте получим первый выделенный элемент <input>
+
+
+
+# import time
+# from selenium.webdriver import Keys
+# from selenium import webdriver
+# from selenium.webdriver.common.by import By
+#
+# with webdriver.Chrome() as browser:
+#     browser.get('http://parsinger.ru/scroll/1/')
+#     tags_input = browser.find_elements(By.TAG_NAME, 'input')
+#
+#     for input in tags_input:
+#         input.send_keys(Keys.DOWN)
+#         time.sleep(1)
+
+
+# import time
+# from selenium.webdriver import Keys
+# from selenium import webdriver
+# from selenium.webdriver.common.by import By
+#
+# with webdriver.Chrome() as browser:
+#     browser.get('http://parsinger.ru/scroll/1/')
+#
+#     list_input = []
+#     while True:
+#         input_tags = [x for x in browser.find_elements(By.TAG_NAME, 'input')]
+#         for tag_input in input_tags:
+#             if tag_input not in list_input:
+#                 tag_input.send_keys(Keys.DOWN)
+#                 tag_input.click()
+#                 time.sleep(1)
+#                 list_input.append(tag_input)
+
+
+
+#           methods 3
+#           ActionChains()
+#from selenium.webdriver.common.action_chains import ActionChains
+
+# ActionChains(webdriver) - принимает единственный объект, объект webdriver'a.
+#
+# .perform() - выполняет запуск цепочки действий, написание этого метода в конце
+# каждой цепочки , просто необходимо для его запуска
+
+# menu = driver.find_element(By.CSS_SELECTOR, ".nav")
+# hidden_submenu = driver.find_element(By.CSS_SELECTOR, ".nav #submenu1")
+#
+# ActionChains(driver).move_to_element(menu).click(hidden_submenu).perform()
+
+# from selenium.webdriver.common.by import By
+# from selenium.webdriver.chrome.options import Options
+# from selenium import webdriver
+# from selenium.webdriver.common.action_chains import ActionChains
+#
+# with webdriver.Chrome() as browser:
+#     target = browser.find_element(By.ID, 'like')
+#     actions = ActionChains(browser).move_to_element(target).click().perform()
+
+
+import time
+from selenium.webdriver.chrome.options import Options
+# from selenium import webdriver
+# from selenium.webdriver.common.action_chains import ActionChains
+#
+# with webdriver.Chrome() as browser:
+#     target = browser.find_element(By.ID, 'like')
+#     actions = ActionChains(browser)
+#     "тут может находиться любой код, от time.sleep() до перехода в новую вкладку и т.д"
+#     actions.move_to_element(target)
+#     "тут может находиться любой код, от time.sleep() до перехода в новую вкладку и т.д"
+#     actions.click()
+#     "тут может находиться любой код, от time.sleep() до перехода в новую вкладку и т.д"
+#     actions.perform()
+
+
+
+#           method4
+#           scroll_by_amount()
+
+#scroll_by_amount(delta_x, delta_y) -
+# - delta_x: расстояние по оси X для прокрутки с помощью колеса.
+#                     Отрицательное значение прокручивается влево.
+# - delta_y: расстояние по оси Y для прокрутки с помощью колеса.
+#                     Отрицательное значение прокручивается вверх.
+
+
+
+# from selenium import webdriver
+# from selenium.webdriver.common.action_chains import ActionChains
+# from selenium.webdriver.common.by import By
+#
+#
+# with webdriver.Chrome() as browser:
+#     browser.get('https://parsinger.ru/infiniti_scroll_2/')
+#     div = browser.find_element(By.XPATH, '//*[@id="scroll-container"]/div')
+#     while True:
+#         ActionChains(browser).move_to_element(div).scroll_by_amount(1, 500).perform()
+
+
+# from selenium import webdriver
+# from selenium.webdriver.common.action_chains import ActionChains
+# from selenium.webdriver.common.by import By
+#
+# with webdriver.Chrome() as browser:
+#     browser.get('https://parsinger.ru/infiniti_scroll_2/')
+#     div = browser.find_element(By.XPATH, '//*[@id="scroll-container"]/div')
+#     for x in range(10):
+#         ActionChains(browser).move_to_element(div).scroll_by_amount(1, 500).perform()
+
+
+
+
+#               Task4
+
+#
+# import time
+# from selenium.webdriver.common.by import By
+# from selenium.webdriver.chrome.options import Options
+# from selenium import webdriver
+# from selenium.webdriver.common.action_chains import ActionChains
+#
+# with webdriver.Chrome() as browser:
+#     browser.get('https://parsinger.ru/scroll/training_task_3/')
+#     actions = ActionChains(browser)
+#     klick = browser.find_elements(By.CLASS_NAME, 'checkbox_class')
+#     print(klick)
+#     total = 0
+#     for k in range(len(klick)):
+#         actions.scroll_to_element(klick[k]) # important the method
+#         klick[k].click()
+#         time.sleep(1)
+#         el = browser.find_element(By.ID, f'result{k+1}').text
+#         if el != '':
+#             total += int(el)
+#
+#     print(total)
+
+
+
+#               Task 4
+
+# import time
+# from selenium.webdriver.common.by import By
+# from selenium.webdriver.chrome.options import Options
+# from selenium import webdriver
+# from selenium.webdriver.common.action_chains import ActionChains
+#
+# with webdriver.Chrome() as browser:
+#     browser.get('https://parsinger.ru/scroll/3/')
+#     actions = ActionChains(browser)
+#     klick = browser.find_elements(By.CLASS_NAME, 'checkbox_class')
+#     print(len(klick))
+#     total = 0
+#     for k in range(len(klick)):
+#         actions.scroll_to_element(klick[k]) # important the method
+#         klick[k].click()
+#
+#
+#         el = browser.find_element(By.ID, f'result{k+1}').text
+#         if el != '':
+#             total += int(el)
+#             print(el)
+#     time.sleep(20)
+#     print(total)
+
+
+
+
+#               Task5
+#
+import time
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver import Keys
+
+with webdriver.Chrome() as browser:
+    browser.get('https://parsinger.ru/infiniti_scroll_1/')
+    actions = ActionChains(browser)
+    k = browser.find_elements(By.TAG_NAME, 'input')
+
+    print([i.text for i in k])
+
+
+#.move_to_element(to_element)
+
+
