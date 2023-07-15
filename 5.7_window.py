@@ -151,3 +151,11 @@ with webdriver.Chrome() as browser:
         res = browser.find_element(By.ID, 'result').text
         if res != 'Неверный пин-код':
             print(res)
+
+
+
+# from selenium import webdriver
+#
+# url = 'https://stepik.org/a/104774'
+# browser = webdriver.Chrome()
+# browser.get(url)

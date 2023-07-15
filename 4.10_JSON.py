@@ -139,9 +139,8 @@
 #     json.dump(result_json, file, indent=4, ensure_ascii=False)
 
 
-
 #           part3
-#extract the attribute value
+# extract the attribute value
 
 
 # import requests
@@ -157,7 +156,6 @@
 #
 # li_id = [x['id'] for x in description]
 # print(li_id)
-
 
 
 #           task1
@@ -196,7 +194,6 @@
 #
 # with open('res.json', 'w', encoding='utf-8') as file:
 #     json.dump(result_json, file, indent=4, ensure_ascii=False)
-
 
 
 #           task2
@@ -240,51 +237,73 @@
 
 #           task3
 
+# import requests
+# from bs4 import BeautifulSoup
+# import json
+#
+# result_json = []
+# # 1 ------------------------------------------------------
+# for i in range(1, 33):
+#     url = f'https://parsinger.ru/html/mouse/3/3_{i}.html'
+#     response = requests.get(url=url)
+#     response.encoding = 'utf-8'
+#     soup = BeautifulSoup(response.text, 'lxml')
+#     # 1 ------------------------------------------------------
+#
+#     # 2 ------------------------------------------------------
+#
+#     name = [x.text.strip() for x in soup.find_all('p', id='p_header')]
+#     description = [x.text.strip().split('\n') for x in soup.find_all('ul', id='description')]
+#     count = [x.text for x in soup.find_all('span', id='in_stock')]
+#     price = [x.text for x in soup.find_all('span', id='price')]
+#     old_price = [x.text for x in soup.find_all('span', id='old_price')]
+#     link = url
+#     # 2 ------------------------------------------------------
+#
+#     # 3 ------------------------------------------------------
+#     for description, count, price, old_price, name, link in zip(description, count, price, old_price, name, url):
+#         result_json.append({
+#
+#             'name': name,
+#             'description': {description[j].split(':')[0].strip(): description[j].split(':')[1].strip() for j in
+#                             range(len(description))
+#                             # 'model': [x.split(':')[1] for x in list_item][1],
+#                             # 'type': [x.split(':')[1] for x in list_item][2],
+#                             # 'purpose': [x.split(':')[1] for x in list_item][3],
+#                             # 'light': [x.split(':')[1] for x in list_item][4],
+#                             # 'size': [x.split(':')[1] for x in list_item][5],
+#                             # 'dpi': [x.split(':')[1] for x in list_item][6],
+#                             # 'site': [x.split(':')[1] for x in list_item][7]
+#                             },
+#             'count': count,
+#             'price': price,
+#             'old_price': old_price,
+#             'link': url
+#         })
+#
+# # 3 ------------------------------------------------------
+# print(len(result_json))
+# # 4 ------------------------------------------------------
+# with open('res.json', 'w', encoding='utf-8') as file:
+#     json.dump(result_json, file, indent=4, ensure_ascii=False)
+# # 4 ------------------------------------------------------
+
+
+#               task4
+
 import requests
 from bs4 import BeautifulSoup
 import json
 
-# 1 ------------------------------------------------------
-url = 'https://parsinger.ru/html/mouse/3/3_1.html'
-response = requests.get(url=url)
-response.encoding = 'utf-8'
-soup = BeautifulSoup(response.text, 'lxml')
-# 1 ------------------------------------------------------
-
-# 2 ------------------------------------------------------
-categories = 'maus'
-name = [x.text.strip() for x in soup.find_all('p', id='p_header')]
-description = [x.text.strip().split('\n') for x in soup.find_all('ul', id='description')]
-count = [x.text for x in soup.find_all('span', id='in_stock')]
-price = [x.text for x in soup.find_all('span', id='price')]
-old_price = [x.text for x in soup.find_all('span', id='old_price')]
-link = url
-# 2 ------------------------------------------------------
-
 result_json = []
-# 3 ------------------------------------------------------
-for list_item, count, price, old_price, name, link in zip(description, count, price, old_price, name, url):
-    result_json.append({
-        'categories': 'mouse',
-        'name': name,
-        'description' : {'brand': [x.split(':')[1] for x in list_item][0],
-                         'model': [x.split(':')[1] for x in list_item][1],
-                         'type': [x.split(':')[1] for x in list_item][2],
-                         'purpose': [x.split(':')[1] for x in list_item][3],
-                         'light': [x.split(':')[1] for x in list_item][4],
-                         'size': [x.split(':')[1] for x in list_item][5],
-                         'dpi': [x.split(':')[1] for x in list_item][6],
-                         'site': [x.split(':')[1] for x in list_item][7]
-                                  },
-        'count': count,
-        'price': price,
-        'old_price' : old_price,
-        'link' : url
-    })
+ur = []
+# 1 ------------------------------------------------------
+for i in range(1, 6):
+    for j in range(1, 5):
+        url = f'https://parsinger.ru/html/index{i}_page_{j}.html'
+        response = requests.get(url=url)
+        response.encoding = 'utf-8'
+        soup = BeautifulSoup(response.text, 'lxml')
+    
 
-# 3 ------------------------------------------------------
-
-# 4 ------------------------------------------------------
-with open('res.json', 'w', encoding='utf-8') as file:
-    json.dump(result_json, file, indent=4, ensure_ascii=False)
-# 4 ------------------------------------------------------
+print(ur)
