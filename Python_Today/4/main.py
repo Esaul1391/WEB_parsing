@@ -36,7 +36,14 @@ for url in fest_urls_list:
     req = requests.get(url=url, headers=headers)
     try:
         soup = BeautifulSoup(req.text, 'lxml')
+        fest_name = soup.find('h1', class_='MuiTypography-root MuiTypography-body1 css-r2lffm').text.strip()
+        fest = soup.find_all('div', class_='MuiGrid-root MuiGrid-item MuiGrid-grid-xs-11 css-twt0ol')
+        data_fest = fest[0].find('span').text
+        local_fest = fest[1].find('span').text
+        # price_fest = fest[2].find('span').text
+        # local_fest = soup.find('div', class_='MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 css-2re0kq').find('span', style="font-weight:600")
 
+        # get contakt
     except Exception as ex:
         print(ex)
         print("Damp... There was some error...")
