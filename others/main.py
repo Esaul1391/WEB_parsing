@@ -37,14 +37,14 @@ def data_name():
             # rank = rank_name[0] + rank_name[1]
             # name = rank_name[2] + rank_name[3] + rank_name[4]
         # print(post, rank, name)
-        data_list.append(
-            {
-                'Должность': post,
-                'Звание': rank,
-                'ИФО': name
-            }
-        )
-
+        # data_list.append(
+        #     {
+        #         'Должность': post,
+        #         'Звание': rank,
+        #         'ИФО': name
+        #     }
+        # )
+        data_list.append([post, rank, name])
         with open("sp.csv", "a") as file:
             writer = csv.writer(file)
 
@@ -59,7 +59,7 @@ def data_name():
     print(*data_list)
 
 
-def data_cal():
+def data_cal_num():
     sp1 = []
     with open("/home/user/PycharmProjects/WEB_parsing/others/call", 'r') as file:
         sp1 = file.read().replace('\n', ' ').replace("-", '').split(' ')  # Убираю ненужные символы, создаю список.
@@ -76,7 +76,6 @@ def data_cal():
 
         if type(item) != int:
             if type(last_item) == int:
-
                 list_name_tel.append(sp)
                 sp = []
             sp.append(item)
@@ -89,10 +88,26 @@ def data_cal():
     # file = open("/home/user/PycharmProjects/WEB_parsing/others/call")
     # print(file.read())
 
+def data_nickname():
+    path_ex = "/home/user/PycharmProjects/WEB_parsing/others/позывные.xls"
+    ex_data_file = xlrd.open_workbook(path_ex)
+    sheet = ex_data_file.sheet_by_index(0)
+    sp_row = []
+    for item in sheet:
+        sp = []
+        if str(item[-1]) != "empty:''":
+            sp.append(str(item[-1]).replace('text:', '').replace("'", ''))
+            sp.append(str(item[-2]).replace('text:', '').replace("'", ''))
+            sp_row.append(sp)
+    print(sp_row)
+
+def add_data():
+    pass
 
 def main():
-    data_cal()
-
+    data_cal_num()
+    data_nickname()
+    data_name()
 
 if __name__ == "__main__":
     main()
