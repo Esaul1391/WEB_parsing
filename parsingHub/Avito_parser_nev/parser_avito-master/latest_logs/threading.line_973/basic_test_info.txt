@@ -1,0 +1,24 @@
+threading.py:973:SB
+--------------------------------------------------------------------
+Last Page: https://www.avito.ru/moskva/kollektsionirovanie/modeli-ASgBAgICAUQcmAE?p=21
+ Duration: 303.49s
+  Browser: Chrome 115.0.5790.170 / headless
+   Driver: chromedriver 114.0.5735.90
+Timestamp: 1691898698  (Unix Timestamp)
+     Date: Sunday, 13 August 2023
+     Time: 6:51:38 AM  (MSK, UTC+03:00)
+--------------------------------------------------------------------
+Traceback:
+  File "/usr/lib/python3.10/tkinter/__init__.py", line 1921, in __call__
+    return self.func(*args)
+  File "/home/user/PycharmProjects/WEB_parsing/venv/lib/python3.10/site-packages/customtkinter/windows/widgets/ctk_button.py", line 554, in _clicked
+    self._command()
+  File "/home/user/PycharmProjects/WEB_parsing/parsingHub/Avito_parser_nev/parser_avito-master/AvitoParser.py", line 172, in stop_scraping
+    self.stop_button.configure(text='Останавливаюсь', state='disabled', row=9, column=0, padx=5, pady=5, sticky="ew")
+  File "/home/user/PycharmProjects/WEB_parsing/venv/lib/python3.10/site-packages/customtkinter/windows/widgets/ctk_button.py", line 442, in configure
+    super().configure(require_redraw=require_redraw, **kwargs)
+  File "/home/user/PycharmProjects/WEB_parsing/venv/lib/python3.10/site-packages/customtkinter/windows/widgets/core_widget_classes/ctk_base_class.py", line 133, in configure
+    check_kwargs_empty(kwargs, raise_error=True)
+  File "/home/user/PycharmProjects/WEB_parsing/venv/lib/python3.10/site-packages/customtkinter/windows/widgets/utility/utility_functions.py", line 18, in check_kwargs_empty
+    raise ValueError(f"{list(kwargs_dict.keys())} are not supported arguments. Look at the documentation for supported arguments.")
+Exception: ['row', 'column', 'padx', 'pady', 'sticky'] are not supported arguments. Look at the documentation for supported arguments.
