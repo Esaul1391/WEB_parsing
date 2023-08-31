@@ -23,7 +23,7 @@ response = requests.get('https://local-ruua.flashscore.ninja/46/x/feed/f_1_0_-1_
 data = response.text.split('¬')
 
 data_list = [{}]
-for item in data[:10]:
+for item in data[:100]:
     key = item.split('÷')[0]
     value = item.split('÷')[-1]
     if '~' in key:
