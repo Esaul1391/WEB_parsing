@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 import requests
 
@@ -23,7 +24,8 @@ response = requests.get('https://local-ruua.flashscore.ninja/46/x/feed/f_1_0_-1_
 data = response.text.split('¬')
 
 data_list = [{}]
-for item in data[:100]:
+
+for item in data:
     key = item.split('÷')[0]
     value = item.split('÷')[-1]
     if '~' in key:
@@ -32,8 +34,10 @@ for item in data[:100]:
 
         data_list[-1].update({key: value})
 
-
 for elements in data_list:
-    print(json.dumps(elements,ensure_ascii=False, indent=2))
-
-
+    if "AA" in list(elements.keys())[0]:
+        date = datetime.fromtimestamp(int(elements.get("AD"))) # Перевожу абсолютное время в повседненвное
+        team_1 = elements.get("AE")
+        team_2 = elements.get("AF")
+        score = f"{elements.get('AG')} : {elements.get('AH')}"
+        print(score, team_2, team_1, date)
