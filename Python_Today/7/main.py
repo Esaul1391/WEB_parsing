@@ -54,7 +54,7 @@ def collct_data(pages_count):
 
 
 def main():
-    pages_count = get_all_pages()
+    get_all_pages()
 
 if __name__ == "__main__":
     main()
