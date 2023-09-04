@@ -11,10 +11,12 @@ headers = {
 
 def download(url):
     resp = requests.get(url, stream=True)   # Добавляю потоковую передачу файла
-    r = open(r'/home/esaul/PycharmProjects/Parsing/PR_HUB/imges' + url.split('/')[-1], 'wb')
-    for value in resp.iter_content(1024 * 1024): # 1 килобайт за один проход
+    r = open(r'/home/esaul/PycharmProjects/Parsing/PR_HUB/imges' + url.split('/')[-1], 'wb')    #   прописываю как должен сохраниться файл
+    for value in resp.iter_content(1024 * 1024):    #   1 мегабайт за один проход
         r.write(value)
     r.close()
+
+#   создаю список страниц
 def get_url():
     for count in range(1, 7):
         url = f'https://scrapingclub.com/exercise/list_basic/?page={count}'
@@ -28,8 +30,9 @@ def get_url():
         #     print(name, price, link)
         for i in data:
             card_link = 'https://scrapingclub.com' + i.find('a').get('href')
-            yield card_link
+            yield card_link    #    Генератор списков
 
+#
 def array():
     for card_url in get_url():
         request = requests.get(card_url, headers=headers)
