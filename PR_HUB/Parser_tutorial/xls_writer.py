@@ -2,7 +2,7 @@ import xlsxwriter
 from main import array
 
 def writer(parametr):
-    book = xlsxwriter.Workbook(r'/home/esaul/PycharmProjects/Parsing/PR_HUB/data.xlsx') # сохдаю файл таблицы
+    book = xlsxwriter.Workbook(r'/PR_HUB/Parser_tutorial/data.xlsx') # сохдаю файл таблицы
     page = book.add_worksheet('товары')     # создаю новую страницу в иксель
 
     row = 0
