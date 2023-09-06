@@ -33,7 +33,7 @@ class ParseWB():
         response = requests.get(
             'https://catalog.wb.ru/brands/m/catalog?appType=1&brand=27445&curr=rub&dest=-1257786&regions=80,38,83,4,64,33,68,70,30,40,86,75,69,22,1,31,66,110,48,71,114&sort=rate&spp=0',
                     )
-        items_info = Items.parse_obj(response.json('data'))
+        items_info = Items.model_validate(response.json('data'))
         self.__save_csv(items_info)
 
     def __create_csv(self):
