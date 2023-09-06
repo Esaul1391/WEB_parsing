@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/esaul/PycharmProjects/Parsing/venv"
+VIRTUAL_ENV="/home/esal/PycharmProjects/WEB_parsing/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
