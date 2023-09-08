@@ -1,6 +1,6 @@
 import xlrd
 import csv
-
+import re
 
 def data_name():
     path_ex = "/home/esal/PycharmProjects/WEB_parsing/others/exsemple.xls"
@@ -24,14 +24,20 @@ def data_name():
     print(row_number)
     data_list = []
     for row in range(1, row_number):
+        ls = []
         structure = list(sheet.row(row))
         # structure = str(list(sheet.row(row))).replace("empty:", "").replace("'", '')
         post = str(structure[2]).strip().replace('text:', '').replace("'", '').replace('empty:', '')
 
         rank_name = str(structure[3]).strip().replace('text:', '').replace("'", '').replace('empty:', '')
-        name = str(structure[4]).strip().replace('text:', '').replace("'", '').replace('empty:', '').replace('1234567890()', "")
 
-        print(rank_name, name)
+        name = str(structure[4]).strip().replace('text:', '').replace("'", '').replace('empty:', '')
+        name = re.sub('[1234567890()\n]', '', name).strip().split(' ')
+        if len(name[-1]) == 1:
+            name.pop(-1)
+
+
+        print(name)
         # post = str(list(sheet.row(row))[1]).replace("empty:''", '').replace("text:", '').replace("'", "")
         # rank_name = str(list(sheet.row(row))[3]).replace("empty:''", '').replace("text:", '').replace("'", "")
         # rank = ''
