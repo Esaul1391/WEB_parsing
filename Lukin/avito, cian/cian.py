@@ -121,18 +121,29 @@ def get_json():
     data = response.json()
     with open('data_cian.json', 'w', encoding='utf-8') as file:
         json.dump(data, file, ensure_ascii=False)
+
+    return data
 def get_offers(data):
     offers = []
 
-    for item in data['offersSerialized']:
-        offer = {}
-        offers.append(offer)
+    for item in data['data']['offersSerialized']:
 
+        offer = {}
+        offer["price"] = item["bargainTerms"]["priceRur"]
+        offer["address"] = item["geo"]["userInput"]
+        offer["area"] = item["totalArea"]
+        offer["rooms"] = item["roomsCount"]
+        offer["floor"] = item["floorNumber"]
+        offer["total_floor"] = item["building"]["floorsCount"]
+        offers.append(offer)
+        print(offer)
     return offers
 
 def main():
-    get_json()
-
+    data = get_json()
+    # print(data)
+    get_offers(data)
+    # 'https://www.cian.ru/cat.php?currency=2&deal_type=sale&engine_version=2&foot_min=30&maxprice=8000000&minprice=5000000&mintarea=30&offer_type=flat&only_flat=1&only_foot=2&region=1&room1=1&room2=1&sort=creation_date_desc'
 
 if __name__ == '__main__':
     main()
