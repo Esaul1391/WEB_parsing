@@ -109,15 +109,6 @@ def get_json():
         json=json_data,
     )
 
-    # Note: json_data will not be serialized by requests
-    # exactly as it was in the original request.
-    # data = '{"jsonQuery":{"_type":"flatsale","sort":{"type":"term","value":"creation_date_desc"},"engine_version":{"type":"term","value":2},"region":{"type":"terms","value":[1]},"price":{"type":"range","value":{"gte":5000000,"lte":8000000}},"currency":{"type":"term","value":2},"foot_min":{"type":"range","value":{"lte":30}},"only_foot":{"type":"term","value":"2"},"room":{"type":"terms","value":[1,2]},"total_area":{"type":"range","value":{"gte":30}},"only_flat":{"type":"term","value":true}}}'
-    # response = requests.post(
-    #    'https://api.cian.ru/search-offers/v2/search-offers-desktop/',
-    #    cookies=cookies,
-    #    headers=headers,
-    #    data=data,
-    # )
     data = response.json()
     with open('data_cian.json', 'w', encoding='utf-8') as file:
         json.dump(data, file, ensure_ascii=False)
