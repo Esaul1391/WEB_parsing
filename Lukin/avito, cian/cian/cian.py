@@ -1,5 +1,7 @@
 import requests
 import json
+import sqlite3
+
 def get_json():
     cookies = {
         '_CIAN_GK': '732ac201-83d7-4c84-a538-4cf1ecd4e12c',
@@ -114,27 +116,43 @@ def get_json():
         json.dump(data, file, ensure_ascii=False)
 
     return data
+
+# def get_offer(item):
+#     offer = {}
+#     offer["price"] = item["bargainTerms"]["priceRur"]
+#     offer["address"] = item["geo"]["userInput"]
+#     offer["area"] = item["totalArea"]
+#     offer["rooms"] = item["roomsCount"]
+#     offer["floor"] = item["floorNumber"]
+#     offer["total_floor"] = item["building"]["floorsCount"]
+#     offers.append(offer)
+#     print(offer)
+
+def check_database(item):
+    offer_id = item['id']
+
+    with sqlite3.connect('../db/realty.db') as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT offer_id FROM offers WHERE offer_id = (?)",
+                       (offer_id,))
+        result= cursor.fetchone()
+        if result in None:
+            offer = get_offer()
+            #TODO send_telegram()
+
+
 def get_offers(data):
-    offers = []
-
     for item in data['data']['offersSerialized']:
+        check_database(item)
 
-        offer = {}
-        offer["price"] = item["bargainTerms"]["priceRur"]
-        offer["address"] = item["geo"]["userInput"]
-        offer["area"] = item["totalArea"]
-        offer["rooms"] = item["roomsCount"]
-        offer["floor"] = item["floorNumber"]
-        offer["total_floor"] = item["building"]["floorsCount"]
-        offers.append(offer)
-        print(offer)
-    return offers
+
 
 def main():
     data = get_json()
-    # print(data)
+
     get_offers(data)
     # 'https://www.cian.ru/cat.php?currency=2&deal_type=sale&engine_version=2&foot_min=30&maxprice=8000000&minprice=5000000&mintarea=30&offer_type=flat&only_flat=1&only_foot=2&region=1&room1=1&room2=1&sort=creation_date_desc'
+
 
 if __name__ == '__main__':
     main()
