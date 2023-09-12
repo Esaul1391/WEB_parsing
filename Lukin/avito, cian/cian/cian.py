@@ -1,7 +1,7 @@
 import requests
 import json
 import sqlite3
-
+from datetime import datetime
 def get_json():
     cookies = {
         '_CIAN_GK': '732ac201-83d7-4c84-a538-4cf1ecd4e12c',
@@ -117,16 +117,24 @@ def get_json():
 
     return data
 
-# def get_offer(item):
-#     offer = {}
-#     offer["price"] = item["bargainTerms"]["priceRur"]
-#     offer["address"] = item["geo"]["userInput"]
-#     offer["area"] = item["totalArea"]
-#     offer["rooms"] = item["roomsCount"]
-#     offer["floor"] = item["floorNumber"]
-#     offer["total_floor"] = item["building"]["floorsCount"]
-#     offers.append(offer)
-#     print(offer)
+def get_offer(item):
+    offer = {}
+
+    offer["url"] = item["fullUrl"]
+    offer["offer_id"] = item["id"]
+
+    timestamp = datetime.fromtimestamp(item["addedTimestamp"])
+    timestamp = datetime.strftime(timestamp, '%Y-%m-%d %H:%M:%S')
+    offer["date"] = timestamp
+
+    offer["price"] = item["bargainTerms"]["priceRur"]
+    offer["address"] = item["geo"]["userInput"]
+    offer["area"] = item["totalArea"]
+    offer["rooms"] = item["roomsCount"]
+    offer["floor"] = item["floorNumber"]
+    offer["total_floor"] = item["building"]["floorsCount"]
+
+    return offer
 
 def check_database(item):
     offer_id = item['id']
@@ -137,7 +145,7 @@ def check_database(item):
                        (offer_id,))
         result= cursor.fetchone()
         if result in None:
-            offer = get_offer()
+            offer = get_offer(result)
             #TODO send_telegram()
 
 
