@@ -8,8 +8,8 @@ class OzonSellerParse:
         self.keyword = keyword
         self.list_seller_name = []
 
-    def __page_down(self):
-        self.page.evaluate('''
+    def __page_down(self, page):
+        page.evaluate('''
                                         const scrollStep = 200; // Размер шага прокрутки (в пикселях)
                                         const scrollInterval = 100; // Интервал между шагами (в миллисекундах)
 
@@ -29,11 +29,17 @@ class OzonSellerParse:
         self.page2 = self.context.new_page()
         self.page2.goto(url=url)
 
-
-
+        self.__page_down(self.page2)
+        try:
+            self.page2.wait_for_selector(f":text('Продавец')")
+            elements = self.page2.query_selector_all('a[href^="https://www.ozon.ru/sell"]')     # ^ element begin from this value
+            seller_name = elements[1].inner_text()
+            print(seller_name)
+        except Exception:
+            return
     def __get_links(self):
         self.page.wait_for_selector('#paginatorContent')
-        self.__page_down()
+        self.__page_down(self.page)
         self.page.wait_for_selector(f':text("Дальше")')
 
         search_resault = self.page.query_selector('#paginatorContent')
@@ -58,5 +64,4 @@ class OzonSellerParse:
 
 
 if __name__ == '__main__':
-    OzonSellerParse('пластик для 3d принтера').parse()
-    time.sleep(10)
+    OzonSellerParse('пластик')
