@@ -2,6 +2,9 @@ import xlrd
 import csv
 import re
 
+
+
+
 def data_name():
     path_ex = "/home/esal/PycharmProjects/WEB_parsing/others/exsemple.xls"
     ex_data_file = xlrd.open_workbook(path_ex)
@@ -24,37 +27,28 @@ def data_name():
     print(row_number)
     data_list = []
     for row in range(1, row_number):
+        data_list.append(sheet.row(row))
+    data_list_fin = []
+    for row in data_list:
         ls = []
-        structure = list(sheet.row(row))
-        # structure = str(list(sheet.row(row))).replace("empty:", "").replace("'", '')
-        post = str(structure[2]).strip().replace('text:', '').replace("'", '').replace('empty:', '')
+        for r in row:
+            i = re.sub('[^а-яА-ЯёЁ]', ' ', str(r))
+            ls.append(i)
+        ls = [item for item in ls if item.strip() != '']
+        ls = [item.strip() for item in ls]
 
-        rank_name = str(structure[3]).strip().replace('text:', '').replace("'", '').replace('empty:', '')
-
-        name = str(structure[4]).strip().replace('text:', '').replace("'", '').replace('empty:', '')
-        name = re.sub('[1234567890()\n]', '', name).strip().split(' ')
-        if len(name[-1]) == 1:
-            name.pop(-1)
+        if len(ls) > 1 and 'полиции' in ls[-2]:
+            ls[-2] = ls[-2].split('полиции')
+            ls[-2][0] += 'полиции'
+            print(ls)
 
 
-        print(name)
-        # post = str(list(sheet.row(row))[1]).replace("empty:''", '').replace("text:", '').replace("'", "")
-        # rank_name = str(list(sheet.row(row))[3]).replace("empty:''", '').replace("text:", '').replace("'", "")
-        # rank = ''
-        # name = ''
-        # if rank_name != "":
-        #     try:
-        #         rank_name = rank_name.split('полиции')
-        #         rank = rank_name[0] + 'полиции'
-        #         name = rank_name[1].strip().split(' ')
-        #     except:
-        #         print(f"Error {row}", rank_name)
-        #
-        #     rank = rank_name[0] + rank_name[1]
-        #     # name = rank_name[2] + rank_name[3] + rank_name[4]
-        #     # name = rank_name[2]
-        # print(post, rank, name)
-        # data_list.append(
+        print(ls)
+        data_list_fin.append(ls)
+
+    return data_list_fin
+
+
         #     {
         #         'Должность': post,
         #         'Звание': rank,
