@@ -9,13 +9,13 @@ def parser(url:str):
     list_product = []
     src = requests.get(url=url)
     soup = BeautifulSoup(src.text, 'lxml')
-    page_len = int(soup.find_all('a', class_="pagination--link")[-2].text)
+    page_len = int(soup.find_all('a', class_="pagination--link")[-2].text)  # find volume pagination
     print(page_len)
     for page in range(1, 36):
-
-        res = requests.get(f'{url}&p={page}')
+        res = requests.get(f'{url}&p={page}')   #
         soup = BeautifulSoup(res.text, 'lxml')
-        products = soup.find_all("div", class_='product-card oneclick-enabled')
+        products = soup.find_all("div", class_='product-card oneclick-enabled')     # find kart with product
+        #   find data product
         for product in products:
             name = product.get('data-product-name')
             code = product.find('span', class_ = 'product-card__key').text
