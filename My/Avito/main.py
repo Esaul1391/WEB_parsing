@@ -1,10 +1,24 @@
-from playwright.sync_api import sync_playwright
+import undetected_chromedriver as uc
 
-with sync_playwright() as playwright:
-    browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()
-    page = context.new_page()
+driver = uc.Chrome(version_main=116)  # wride my version
+driver.get('https://avito.ru')
 
-    # Переход на страницу авито
-    page.goto('https://www.avito.ru/')
-    search_input = page.locator('input[data-marker="search-form/suggest"]').type(text='dfsdf'.keyword, delay=0.3)
+
+class AvitoParse:
+    def __init__(self, url: str, items: list, count=100, version_main=None):
+        self.url = url
+        self.items = items
+        self.count = count
+        self.version = version_main
+
+    def __set_up(self):
+        ...
+
+    def __paginstor(self):
+        pass
+
+    def __parse_page(self):
+        pass
+
+    def parse(self):
+        pass
