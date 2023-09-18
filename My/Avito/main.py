@@ -12,10 +12,13 @@ def get_url(url):
     return driver
 
 def paginator(driver):
-    while driver.find_elements(By.CSS_SELECTOR, "[data-marker='pagination-button/next]"):  # don't add count
+    pagiation = driver.find_elements(By.CSS_SELECTOR, '[class*="styles-module-listItem-_La42"]')     # don't add count
+    print(pagiation[-2].text)
+
         # __parse_page()
-        driver.find_element(By.CSS_SELECTOR, "[data-marker='pagination-button/next]").click()
-        return 1
+        # driver.find_element(By.CSS_SELECTOR, "[data-marker='pagination-button/next']").click()
+        # time.sleep(40)
+
 
 def parse_page(driver):
 
@@ -26,14 +29,14 @@ def parse_page(driver):
         link = title.find_element(By.CSS_SELECTOR, "[data-marker='item-title']").get_attribute('href')
         price = title.find_element(By.CSS_SELECTOR, '[itemprop="price"]').get_attribute('content')
         print(name, description, link, price)
-        time.sleep(second)
-        drive = get_url(link)
-        time.sleep(second)
-        drive.find_element(By.CSS_SELECTOR, '[data-marker="seller-link/link"]').click()
+        # time.sleep(second)
+        # drive = get_url(link)
+        # time.sleep(second)
+        # drive.find_element(By.CSS_SELECTOR, '[data-marker="seller-link/link"]').click()
+        # # driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         # driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-        time.sleep(5)
+        #
+        # time.sleep(5)
         # sp = []
         #
         # sp_ad = driver.find_elements(By.CSS_SELECTOR, '[data-marker*="item_list_with_filters"]')
@@ -42,7 +45,7 @@ def parse_page(driver):
         #     sp.count(name)
         # print(sp)
 
-        drive.close()
+        # drive.close()
 
 #
 # def __save_data(self):
@@ -59,7 +62,8 @@ def parse_page(driver):
 def main():
     url = 'https://www.avito.ru/moskva/predlozheniya_uslug/oborudovanie_proizvodstvo/proizvodstvo_obrabotka-ASgBAgICAkSYC7SfAaALiKAB?cd=1&p=1&q=3d+печать'
     get = get_url(url)
-    parse_page(get)
+    # parse_page(get)
+    paginator(get)
 
 if __name__ == '__main__':
     main()
