@@ -3,9 +3,9 @@ import time
 
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
+import random
 
-
-
+second = random.randint(1, 4)
 def get_url(url):
     driver = uc.Chrome(version_main=116)  # write my version
     driver.get(url)
@@ -26,9 +26,22 @@ def parse_page(driver):
         link = title.find_element(By.CSS_SELECTOR, "[data-marker='item-title']").get_attribute('href')
         price = title.find_element(By.CSS_SELECTOR, '[itemprop="price"]').get_attribute('content')
         print(name, description, link, price)
-        time.sleep(3)
+        time.sleep(second)
         drive = get_url(link)
-        drive
+        time.sleep(second)
+        drive.find_element(By.CSS_SELECTOR, '[data-marker="seller-link/link"]').click()
+        # driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+        time.sleep(5)
+        # sp = []
+        #
+        # sp_ad = driver.find_elements(By.CSS_SELECTOR, '[data-marker*="item_list_with_filters"]')
+        # for item in sp_ad:
+        #     name = item.find_element(By.CSS_SELECTOR, "[itemprop='name']").text
+        #     sp.count(name)
+        # print(sp)
+
         drive.close()
 
 #
