@@ -65,7 +65,7 @@ def main():
     url = 'https://www.avito.ru/moskva/predlozheniya_uslug/oborudovanie_proizvodstvo/proizvodstvo_obrabotka-ASgBAgICAkSYC7SfAaALiKAB?cd=1&p=1&q=3d+печать'
     get = get_url(url)
     count = paginator(get)
-    for page in range(1, count): # Сделать закрытие страницы
+    for page in range(1, count + 1): # Сделать закрытие страницы
         url = f'https://www.avito.ru/moskva/predlozheniya_uslug/oborudovanie_proizvodstvo/proizvodstvo_obrabotka-ASgBAgICAkSYC7SfAaALiKAB?cd=1&p={page}&q=3d+печать'
         get = get_url(url)
         parse_page(get)
