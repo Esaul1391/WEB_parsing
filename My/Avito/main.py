@@ -1,3 +1,4 @@
+
 import json
 import time
 
@@ -5,16 +6,17 @@ import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 import random
 
-second = random.randint(1, 4)
+second = random.randint(20, 30)
 def get_url(url):
     driver = uc.Chrome(version_main=116)  # write my version
+
     driver.get(url)
     return driver
 
 def paginator(driver):
     pagiation = driver.find_elements(By.CSS_SELECTOR, '[class*="styles-module-listItem-_La42"]')     # don't add count
     print(pagiation[-2].text)
-
+    return int(pagiation[-2].text)
         # __parse_page()
         # driver.find_element(By.CSS_SELECTOR, "[data-marker='pagination-button/next']").click()
         # time.sleep(40)
@@ -62,8 +64,13 @@ def parse_page(driver):
 def main():
     url = 'https://www.avito.ru/moskva/predlozheniya_uslug/oborudovanie_proizvodstvo/proizvodstvo_obrabotka-ASgBAgICAkSYC7SfAaALiKAB?cd=1&p=1&q=3d+печать'
     get = get_url(url)
-    # parse_page(get)
-    paginator(get)
+    count = paginator(get)
+    for page in range(1, count): # Сделать закрытие страницы
+        url = f'https://www.avito.ru/moskva/predlozheniya_uslug/oborudovanie_proizvodstvo/proizvodstvo_obrabotka-ASgBAgICAkSYC7SfAaALiKAB?cd=1&p={page}&q=3d+печать'
+        get = get_url(url)
+        parse_page(get)
+        time.sleep(second)
+
 
 if __name__ == '__main__':
     main()
@@ -73,7 +80,7 @@ if __name__ == '__main__':
 #                items=['3d печать']
 #                ).parse()
 #
-
+#
 
 
 
