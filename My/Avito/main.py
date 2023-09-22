@@ -26,7 +26,7 @@ def parse_page(driver):
 
     titles = driver.find_elements(By.CSS_SELECTOR, "[data-marker='item']")
     for title in titles:
-        name = title.find_element(By.CSS_SELECTOR, "[itemprop='name']").text
+        name = title.find_element(By.CSS_SELECTOR, '[itemprop="name"]').text
         description = title.find_element(By.CSS_SELECTOR, "[class*='styles-module-root']").text  #  * ставится когда требуется примерно сказать название элемента
         link = title.find_element(By.CSS_SELECTOR, "[data-marker='item-title']").get_attribute('href')
         price = title.find_element(By.CSS_SELECTOR, '[itemprop="price"]').get_attribute('content')
@@ -46,8 +46,8 @@ def parse_page(driver):
         #     name = item.find_element(By.CSS_SELECTOR, "[itemprop='name']").text
         #     sp.count(name)
         # print(sp)
+        driver.close()
 
-        # drive.close()
 
 #
 # def __save_data(self):
