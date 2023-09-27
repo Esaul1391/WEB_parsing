@@ -20,9 +20,11 @@ def get_url(url):
 
 def parse_page(driver):
     try:
+        pagination_page = driver.find_elements(By.CSS_SELECTOR, '[class*="styles-module-listItem-_La42"]')  # don't add count
+        print(pagination_page[-2].text)
         time.sleep(sek)
         name = driver.find_elements(By.XPATH, "//h3[@itemprop='name']")
-        for item in range(0, len(name) - 1):
+        for item in range(0, 3):
             time.sleep(sek)
 
             name[item].click()
@@ -30,6 +32,8 @@ def parse_page(driver):
 
             time.sleep(sek)
             driver.switch_to.window(driver.window_handles[1])
+            # name_seller = driver.find_element(By.NAME, "seller-link/link")
+            # print(name_seller)
             time.sleep(sek)
             driver.close()
             driver.switch_to.window(driver.window_handles[0])
@@ -40,9 +44,17 @@ def parse_page(driver):
         driver.close()
         driver.quit()
 
+def pagination(driver):
+    pagination_page = driver.find_elements(By.CSS_SELECTOR, '[class*="styles-module-listItem-_La42"]')     # don't add count
+    print(pagination_page[-2].text)
+    driver.close()
+    return int(pagination_page[-2].text)
+
 def main():
     url = 'https://www.avito.ru/moskva/predlozheniya_uslug/oborudovanie_proizvodstvo/proizvodstvo_obrabotka-ASgBAgICAkSYC7SfAaALiKAB?cd=1&p=1&q=3d+печать'
+
     open_page = get_url(url)
+    pagination(open_page)
     parse_page(open_page)
 
 
