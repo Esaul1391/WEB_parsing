@@ -5,11 +5,17 @@ import time
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 import random
+from fake_useragent import UserAgent
 
 second = random.randint(20, 30)
-def get_url(url):
-    driver = uc.Chrome(version_main=116)  # write my version
+useragent = UserAgent()
 
+options = uc.ChromeOptions()
+options.add_argument(f"user-agent={useragent.random}")
+options.add_argument("--disable-blink-features=AutomationControlled")
+
+def get_url(url):
+    driver = uc.Chrome(version_main=116, options=options)  # write my version
     driver.get(url)
     return driver
 
@@ -17,36 +23,39 @@ def paginator(driver):
     pagiation = driver.find_elements(By.CSS_SELECTOR, '[class*="styles-module-listItem-_La42"]')     # don't add count
     print(pagiation[-2].text)
     return int(pagiation[-2].text)
-        # __parse_page()
-        # driver.find_element(By.CSS_SELECTOR, "[data-marker='pagination-button/next']").click()
-        # time.sleep(40)
+
 
 
 def parse_page(driver):
+    try:
+        titles = driver.find_elements(By.CSS_SELECTOR, "[data-marker='item']")
+        for title in titles:
+            name = title.find_element(By.CSS_SELECTOR, '[itemprop="name"]').text
+            description = title.find_element(By.CSS_SELECTOR, "[class*='styles-module-root']").text  #  * ставится когда требуется примерно сказать название элемента
+            link = title.find_element(By.CSS_SELECTOR, "[data-marker='item-title']").get_attribute('href')
+            price = title.find_element(By.CSS_SELECTOR, '[itemprop="price"]').get_attribute('content')
+            print(name, description, link, price)
+            # time.sleep(second)
+            # drive = get_url(link)
+            # time.sleep(second)
+            # drive.find_element(By.CSS_SELECTOR, '[data-marker="seller-link/link"]').click()
+            # # driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            # driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            #
+            # time.sleep(5)
+            # sp = []
+            #
+            # sp_ad = driver.find_elements(By.CSS_SELECTOR, '[data-marker*="item_list_with_filters"]')
+            # for item in sp_ad:
+            #     name = item.find_element(By.CSS_SELECTOR, "[itemprop='name']").text
+            #     sp.count(name)
+            # print(sp)
 
-    titles = driver.find_elements(By.CSS_SELECTOR, "[data-marker='item']")
-    for title in titles:
-        name = title.find_element(By.CSS_SELECTOR, '[itemprop="name"]').text
-        description = title.find_element(By.CSS_SELECTOR, "[class*='styles-module-root']").text  #  * ставится когда требуется примерно сказать название элемента
-        link = title.find_element(By.CSS_SELECTOR, "[data-marker='item-title']").get_attribute('href')
-        price = title.find_element(By.CSS_SELECTOR, '[itemprop="price"]').get_attribute('content')
-        print(name, description, link, price)
-        # time.sleep(second)
-        # drive = get_url(link)
-        # time.sleep(second)
-        # drive.find_element(By.CSS_SELECTOR, '[data-marker="seller-link/link"]').click()
-        # # driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        # driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        #
-        # time.sleep(5)
-        # sp = []
-        #
-        # sp_ad = driver.find_elements(By.CSS_SELECTOR, '[data-marker*="item_list_with_filters"]')
-        # for item in sp_ad:
-        #     name = item.find_element(By.CSS_SELECTOR, "[itemprop='name']").text
-        #     sp.count(name)
-        # print(sp)
+    except Exception as ex:
+        print(ex)
+    finally:
         driver.close()
+        driver.quit()
 
 
 #
