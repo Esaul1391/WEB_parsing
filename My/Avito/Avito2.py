@@ -22,7 +22,7 @@ def parse_page(driver):
     try:
         time.sleep(sek)
         name = driver.find_elements(By.XPATH, "//h3[@itemprop='name']")
-        for item in range(0, len(name) - 1):
+        for item in range(0, 3):
             time.sleep(sek)
 
             name[item].click()
@@ -30,6 +30,9 @@ def parse_page(driver):
 
             time.sleep(sek)
             driver.switch_to.window(driver.window_handles[1])
+            title = driver.find_element(By.CSS_SELECTOR, '[data-marker="item-view/title-info"]').text
+            views = driver.find_element(By.CSS_SELECTOR, '[data-marker="item-view/total-views"]').text
+            print(title, views)
             time.sleep(sek)
             driver.close()
             driver.switch_to.window(driver.window_handles[0])
@@ -40,10 +43,19 @@ def parse_page(driver):
         driver.close()
         driver.quit()
 
+def pagination(driver):
+    pagiation_page = driver.find_elements(By.CSS_SELECTOR, '[class*="styles-module-listItem-_La42"]')  # don't add count
+    pag = int(pagiation_page[-2].text)
+    time.sleep(sek)
+    driver.close()
+    return pag
 def main():
-    url = 'https://www.avito.ru/moskva/predlozheniya_uslug/oborudovanie_proizvodstvo/proizvodstvo_obrabotka-ASgBAgICAkSYC7SfAaALiKAB?cd=1&p=1&q=3d+печать'
-    open_page = get_url(url)
-    parse_page(open_page)
+    count_url = 1
+    url = f'https://www.avito.ru/moskva/predlozheniya_uslug/oborudovanie_proizvodstvo/proizvodstvo_obrabotka-ASgBAgICAkSYC7SfAaALiKAB?cd=1&p={count_url}&q=3d+печать'
+    count_url = pagination(get_url(url))
+    for item in range(1, count_url + 1):
+        url = f'https://www.avito.ru/moskva/predlozheniya_uslug/oborudovanie_proizvodstvo/proizvodstvo_obrabotka-ASgBAgICAkSYC7SfAaALiKAB?cd=1&p={item}&q=3d+печать'
+        parse_page(get_url(url))
 
 
 
