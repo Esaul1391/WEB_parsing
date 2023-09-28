@@ -20,6 +20,7 @@ def get_url(url):
 
 def parse_page(driver):
     try:
+        
         pagination_page = driver.find_elements(By.CSS_SELECTOR, '[class*="styles-module-listItem-_La42"]')  # don't add count
         print(pagination_page[-2].text)
         time.sleep(sek)
