@@ -12,18 +12,21 @@ with open('data.json', 'w') as f:
 
 def write_json(new_data, filename='data.json'):
     with open(filename, 'r+') as file:
-        # first we load existing data into a dict
+        #   First we load existing data into a dict
         file_data = json.load(file)
-        # Join new_data with file_data inside emp_details
-        file_data["emp_details"].append(new_data)
-        #Sets files
+        #   Join new_data with file_data inside emp_details
+        file_data.append(new_data)
+        #   Sets file's current position at offset
+        file.seek(0)
+        #   convert back to json.
+        json.dump(file_data, file, indent=4)
 
 useragent = UserAgent()
                                 #   options
 options = webdriver.ChromeOptions()
 options.add_argument(f"user-agent={useragent.random}")
 
-url = "https://www.thingiverse.com/search?page=1&per_page=20&sort=popular&posted_after=now-30d&type=things&q=ford+c+max"
+url = "https://www.thingiverse.com/"
 driver = webdriver.Chrome(options=options)     #   write path connect webdriver
 
                                 #   general block
@@ -47,8 +50,14 @@ try:
             print(title, feedback)
             print(img)
             print(link)
+
+            write_json({
+                "title": title,
+                "img": img,
+                "link": link
+            })
         try:
-            driver.find_element(By.CLASS_NAME, 'Pagination__button--Nz_si Pagination__more--GS_fV').click()
+            driver.find_element(By.CLASS_NAME, 'Pagination__right--fIUIM').click()
             time.sleep(4)
         except Exception as e:
             print(e, 'Error hear')
