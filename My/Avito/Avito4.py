@@ -23,7 +23,7 @@ def get_url(url):
     options = uc.ChromeOptions()
     options.add_argument(f"user-agent={useragent.random}")
     options.add_argument("--disable-blink-features=AutomationControlled")
-    # options.add_argument('--headless')
+    options.add_argument('--headless')
     driver = uc.Chrome(options=options)
     driver.get(url)
 
@@ -34,7 +34,7 @@ def parse_page(driver):
     try:
         while True:
             names = driver.find_elements(By.XPATH, "//h3[@itemprop='name']")
-            for name in names[:1]:  # Изменено на обработку только первой записи
+            for name in names:  # Изменено на обработку только первой записи
                 time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
                 name.click()
                 time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
@@ -51,43 +51,7 @@ def parse_page(driver):
                 print(view)
 
                 # Обработка информации о продавце
-                try:
-                    time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
-                    driver.find_element(By.CSS_SELECTOR, '[data-marker="seller-link/link"]').click()
-                    time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
-
-                    rating = driver.find_element(By.CSS_SELECTOR, '[data-marker="profile/summary"]').text
-                    print(rating)
-                    driver.find_element(By.CSS_SELECTOR, '[data-marker="profile/summary"]').click()
-                    time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
-
-                    # Скролл к кнопке "Показать еще отзывы"
-                    while True:
-                        try:
-                            # Скролл к кнопке "Показать еще отзывы" и кликнуть на нее
-                            more_reviews_button = driver.find_element(By.CSS_SELECTOR,
-                                                                      '[data-marker="rating-list/moreReviewsButton"]')
-                            scroll_to_element(driver, more_reviews_button)
-                            more_reviews_button.click()
-                            time.sleep(random.uniform(min_delay, max_delay))
-                        except Exception as e:
-                            break  # Выход из цикла при отсутствии кнопки "Показать еще отзывы"
-
-                        # Поиск элементов с классом "desktop-35wlrd"
-                    desktop_elements = driver.find_elements(By.CLASS_NAME, 'desktop-35wlrd')
-
-                    # Преобразуем элементы в их текстовое представление перед подсчетом
-                    element_texts = [element.text for element in desktop_elements]
-                    element_counts = Counter(element_texts)
-
-                    # Находим три самых повторяющихся элемента
-                    top_elements = element_counts.most_common(3)
-                    print(top_elements)
-
-
-                except:
-                    print("Нет оценок")
-
+                process_seller(driver)
                 time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
                 driver.close()
                 driver.switch_to.window(driver.window_handles[0])
@@ -106,29 +70,43 @@ def parse_page(driver):
         driver.close()
         driver.quit()
 
-# def process_seller(driver):
-#     try:
-#         time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
-#         driver.find_element(By.CSS_SELECTOR, '[data-marker="seller-link/link"]').click()
-#         time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
-#
-#         rating = driver.find_element(By.CSS_SELECTOR, '[data-marker="profile/summary"]').text
-#         print(rating)
-#         driver.find_element(By.CSS_SELECTOR, '[data-marker="profile/summary"]').click()
-#
-#         # Скролл к кнопке "Показать еще отзывы"
-#         more_reviews_button = driver.find_element(By.CSS_SELECTOR, '[data-marker="rating-list/moreReviewsButton"]')
-#         scroll_to_element(driver, more_reviews_button)
-#         more_reviews_button.click()
-#
-#         # Скролл до конца страницы
-#         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-#
-#         # Поиск элементов с классом "desktop-35wlrd"
-#         desktop_elements = driver.find_elements(By.CLASS_NAME, 'desktop-35wlrd')
-#         print(desktop_elements)
-#     except:
-#         print("Нет оценок")
+def process_seller(driver):
+    try:
+        time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
+        driver.find_element(By.CSS_SELECTOR, '[data-marker="seller-link/link"]').click()
+        time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
+
+        rating = driver.find_element(By.CSS_SELECTOR, '[data-marker="profile/summary"]').text
+        print(rating)
+        driver.find_element(By.CSS_SELECTOR, '[data-marker="profile/summary"]').click()
+        time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
+
+        # Скролл к кнопке "Показать еще отзывы"
+        while True:
+            try:
+                # Скролл к кнопке "Показать еще отзывы" и кликнуть на нее
+                more_reviews_button = driver.find_element(By.CSS_SELECTOR,
+                                                          '[data-marker="rating-list/moreReviewsButton"]')
+                scroll_to_element(driver, more_reviews_button)
+                more_reviews_button.click()
+                time.sleep(random.uniform(min_delay, max_delay))
+            except Exception as e:
+                break  # Выход из цикла при отсутствии кнопки "Показать еще отзывы"
+
+                # Поиск элементов с классом "desktop-35wlrd"
+            desktop_elements = driver.find_elements(By.CLASS_NAME, 'desktop-35wlrd')
+
+            # Преобразуем элементы в их текстовое представление перед подсчетом
+            element_texts = [element.text for element in desktop_elements]
+            element_counts = Counter(element_texts)
+
+            # Находим три самых повторяющихся элемента
+            top_elements = element_counts.most_common(3)
+            print(top_elements)
+
+
+    except:
+        print("Нет оценок")
 
 def main():
     url = 'https://www.avito.ru/moskva/predlozheniya_uslug/oborudovanie_proizvodstvo/proizvodstvo_obrabotka-ASgBAgICAkSYC7SfAaALiKAB?cd=1&p=1&q=3d+печать'
