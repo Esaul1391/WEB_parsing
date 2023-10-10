@@ -11,10 +11,12 @@ import csv
 min_delay = 1
 max_delay = 5
 
+
 def scroll_to_element(driver, element):
     actions = ActionChains(driver)
     actions.move_to_element(element)
     actions.perform()
+
 
 def get_url(url):
     useragent = UserAgent()
@@ -28,13 +30,13 @@ def get_url(url):
 
     return driver
 
+
 def parse_page(driver):
     link_list = []
     try:
         i = 0
         while True:
             names = driver.find_elements(By.CSS_SELECTOR, "a.tile-hover-target")
-            # print(names)
             for name in names:
                 link = name.get_attribute('href')
                 link_list.append(link)
@@ -47,15 +49,22 @@ def parse_page(driver):
             except NoSuchElementException:
                 break
             i += 1
-        parse_list(link_list, driver)
+        return link_list
     except (TimeoutException, NoSuchElementException) as ex:
         print(f"Произошло исключение: {ex}")
     finally:
         driver.close()
         driver.quit()
-    return link_list
 
-def parse_list(link_list, driver):
+
+def write_to_csv(data, csv_file):
+    csv_writer = csv.writer(csv_file)
+    csv_writer.writerow(['org', 'title', 'id', 'link_store', 'name'])  # Записываем заголовки
+    for item in data:
+        csv_writer.writerow(item)
+
+
+def parse_list(link_list, driver, csv_writer):
     for link in link_list:
         try:
             driver.get(link)
@@ -65,7 +74,6 @@ def parse_list(link_list, driver):
             page_source = driver.page_source
             soup = BeautifulSoup(page_source, 'html.parser')
 
-            # Найти элемент с помощью CSS-селектора
             org = soup.find('p', class_='pj3').text.split(' ')[0]
             if org == 'Самозанятый':
                 title = soup.find('h1', class_='kz5').text
@@ -73,18 +81,23 @@ def parse_list(link_list, driver):
                 name = soup.find_all('a', class_='p2j')[-1].text
                 id = soup.find('span', attrs={'data-widget': 'webDetailSKU'}).text.split(' ')[-1]
                 print(org, title, id, link_store, name)
+                # Записываем данные в CSV на каждом проходе цикла
+                csv_writer.writerow([org, title, id, link_store, name])
                 time.sleep(random.uniform(min_delay, max_delay))
             driver.back()
         except:
             print('Не нашел')
 
-
 def main():
     url = 'https://www.ozon.ru/search/?text=воздуховол+для+асика&from_global=true'
     open_page = get_url(url)
-    parse_page(open_page)
 
+    # Открываем CSV-файл для записи
+    with open('output.csv', mode='w', newline='', encoding='utf-8') as csv_file:
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerow(['org', 'title', 'id', 'link_store', 'name'])  # Записываем заголовки
 
+        parse_list(parse_page(open_page), open_page, csv_writer)
 
 if __name__ == "__main__":
     main()
