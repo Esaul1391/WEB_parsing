@@ -1,11 +1,10 @@
-from selenium import webdriver as uc
+import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from fake_useragent import UserAgent
 from selenium.webdriver.common.action_chains import ActionChains
 import random
 import time
 from collections import Counter
-
 
 # Устанавливаем случайное время ожидания между запросами
 min_delay = 1  # Минимальное время задержки в секундах
@@ -17,6 +16,7 @@ def scroll_to_element(driver, element):
     actions.move_to_element(element)
     actions.perform()
 
+
 def get_url(url):
     useragent = UserAgent()
 
@@ -24,7 +24,7 @@ def get_url(url):
     options.add_argument(f"user-agent={useragent.random}")
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument('--headless')
-    driver = uc.Chrome(options=options)
+    driver = uc.Chrome(version_main=117, options=options)
     driver.get(url)
 
     return driver
@@ -70,6 +70,7 @@ def parse_page(driver):
         driver.close()
         driver.quit()
 
+
 def process_seller(driver):
     try:
         time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
@@ -80,7 +81,7 @@ def process_seller(driver):
         print(rating)
         driver.find_element(By.CSS_SELECTOR, '[data-marker="profile/summary"]').click()
         time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
-
+        rating_list = []
         # Скролл к кнопке "Показать еще отзывы"
         while True:
             try:
@@ -92,24 +93,23 @@ def process_seller(driver):
                 time.sleep(random.uniform(min_delay, max_delay))
             except Exception as e:
                 break  # Выход из цикла при отсутствии кнопки "Показать еще отзывы"
-
                 # Поиск элементов с классом "desktop-35wlrd"
             desktop_elements = driver.find_elements(By.CLASS_NAME, 'desktop-35wlrd')
 
             # Преобразуем элементы в их текстовое представление перед подсчетом
-            element_texts = [element.text for element in desktop_elements]
-            element_counts = Counter(element_texts)
+            element_texts = [rating_list.append(element.text) for element in desktop_elements]
+        element_counts = Counter(rating_list)
 
-            # Находим три самых повторяющихся элемента
-            top_elements = element_counts.most_common(3)
-            print(top_elements)
-
+        # Находим три самых повторяющихся элемента
+        top_elements = element_counts.most_common(3)
+        print(top_elements)
 
     except:
         print("Нет оценок")
 
+
 def main():
-    url = 'https://www.avito.ru/moskva/predlozheniya_uslug/oborudovanie_proizvodstvo/proizvodstvo_obrabotka-ASgBAgICAkSYC7SfAaALiKAB?cd=1&p=1&q=3d+печать'
+    url = 'https://www.avito.ru/moskva?q=пылеотвод'
     open_page = get_url(url)
     parse_page(open_page)
 

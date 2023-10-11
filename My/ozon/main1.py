@@ -87,7 +87,10 @@ def parse_list(link_list, driver, csv_writer):
             driver.back()
         except:
             print('Не нашел')
-
+def __create_csv(self):
+    with open("oz_data.csv", 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['org', 'title', 'id', 'link_store', 'name'])
 def main():
     url = 'https://www.ozon.ru/search/?text=воздуховол+для+асика&from_global=true'
     open_page = get_url(url)
