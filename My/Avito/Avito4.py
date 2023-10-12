@@ -4,6 +4,7 @@ from fake_useragent import UserAgent
 from selenium.webdriver.common.action_chains import ActionChains
 import random
 import time
+import csv
 from collections import Counter
 
 # Устанавливаем случайное время ожидания между запросами
@@ -16,6 +17,18 @@ def scroll_to_element(driver, element):
     actions.move_to_element(element)
     actions.perform()
 
+def save_to_csv(data):
+    # Открываем CSV файл для записи (если он не существует, он будет создан)
+    with open('data.csv', mode='a', newline='', encoding='utf-8') as file:
+        # Создаем объект writer для записи данных в файл
+        writer = csv.writer(file)
+
+        # Записываем заголовки (если нужно)
+        writer.writerow(['Name', 'ID', 'Data_time', 'View', 'Имя магазина', 'reiting'])
+
+        # Записываем данные в файл
+        for item in data:
+            writer.writerow(item)
 
 def get_url(url):
     useragent = UserAgent()
@@ -31,10 +44,12 @@ def get_url(url):
 
 
 def parse_page(driver):
+
     try:
         while True:
             names = driver.find_elements(By.XPATH, "//h3[@itemprop='name']")
             for name in names:  # Изменено на обработку только первой записи
+                data_save = []
                 time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
                 name.click()
                 time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
@@ -51,12 +66,13 @@ def parse_page(driver):
                 print(view)
 
                 # Обработка информации о продавце
-                process_seller(driver)
+                top_rating = process_seller(driver)
+                data_save.append([name_ad, id, data_item, view, top_rating])
                 time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
                 driver.close()
                 driver.switch_to.window(driver.window_handles[0])
                 time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
-
+                save_to_csv(data_save)
             try:
                 # Используем CSS селектор для кнопки "Следующая страница"
                 driver.find_element(By.CSS_SELECTOR, '[data-marker="pagination-button/nextPage"]').click()
@@ -86,8 +102,8 @@ def process_seller(driver):
         while True:
             try:
                 # Скролл к кнопке "Показать еще отзывы" и кликнуть на нее
-                more_reviews_button = driver.find_element(By.CSS_SELECTOR,
-                                                          '[data-marker="rating-list/moreReviewsButton"]')
+                more_reviews_button = driver.find_element(By.CSS_SELECTOR, '[data-marker="rating-list/moreReviewsButton"]')
+
                 scroll_to_element(driver, more_reviews_button)
                 more_reviews_button.click()
                 time.sleep(random.uniform(min_delay, max_delay))
@@ -103,10 +119,10 @@ def process_seller(driver):
         # Находим три самых повторяющихся элемента
         top_elements = element_counts.most_common(3)
         print(top_elements)
-
+        return top_elements
     except:
         print("Нет оценок")
-
+        return "Не кликается"
 
 def main():
     url = 'https://www.avito.ru/moskva?q=пылеотвод'
