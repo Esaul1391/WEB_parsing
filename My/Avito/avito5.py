@@ -10,13 +10,14 @@ import os
 
 # Устанавливаем случайное время ожидания между запросами
 min_delay = 1  # Минимальное время задержки в секундах
-max_delay = 3  # Максимальное время задержки в секундах
+max_delay = 7  # Максимальное время задержки в секундах
 
 
 def scroll_to_element(driver, element):
     actions = ActionChains(driver)
     actions.move_to_element(element)
     actions.perform()
+
 
 def save_to_csv(data):
     file_exists = os.path.isfile('data.csv')
@@ -50,42 +51,55 @@ def get_url(url):
 def parse_page(driver):
 
     try:
-        while True:
-            names = driver.find_elements(By.XPATH, "//h3[@itemprop='name']")
-            for name in names:  # Изменено на обработку только первой записи
-                data_save = []
-                time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
-                name.click()
-                time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
-                driver.switch_to.window(driver.window_handles[1])
+        pagination = int(driver.find_elements(By.CLASS_NAME, 'styles-module-text-InivV')[-1].text)
 
-                # Поиск нужных данных
-                name_ad = driver.find_element(By.CSS_SELECTOR, '[data-marker="item-view/title-info"]').text
-                print(name_ad)
-                id = driver.find_element(By.CSS_SELECTOR, '[data-marker="item-view/item-id"]').text
-                print(id)
-                data_item = driver.find_element(By.CSS_SELECTOR, '[data-marker="item-view/item-date"]').text
-                print(data_item)
-                view = driver.find_element(By.CSS_SELECTOR, '[data-marker="item-view/total-views"]').text
-                print(view)
+        time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
+        print(pagination)
 
-                # Обработка информации о продавце
-                top_rating = process_seller(driver)
-                data_save.append([name_ad, id, data_item, view, top_rating])
-                time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
-                driver.close()
-                driver.switch_to.window(driver.window_handles[0])
-                time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
-                save_to_csv(data_save)
+        for item in range(1, pagination):
+            print('*' * 10, f"page {item} from pages {pagination}")
+            url = f"https://www.avito.ru/moskva/predlozheniya_uslug/oborudovanie_proizvodstvo/proizvodstvo_obrabotka-ASgBAgICAkSYC7SfAaALiKAB?cd=1&p={item}&q=3d+печать"
+            driver.get(url)
+
+            # прохожусь по объявлениям
             try:
-                # Используем CSS селектор для кнопки "Следующая страница"
-                driver.find_element(By.CSS_SELECTOR, '[data-marker="pagination-button/nextPage"]').click()
-                time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
-            except Exception as e:
-                print(e)
-                break  # Выход из цикла при отсутствии кнопки "Следующая страница"
+                names = driver.find_elements(By.XPATH, "//h3[@itemprop='name']")
+                for name in names:  # Изменено на обработку только первой записи
+                    data_save = []
+                    time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
+                    name.click()
+                    time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
+                    driver.switch_to.window(driver.window_handles[1])
+
+                    # Поиск нужных данных
+                    name_ad = driver.find_element(By.CSS_SELECTOR, '[data-marker="item-view/title-info"]').text
+                    print(name_ad)
+                    id = driver.find_element(By.CSS_SELECTOR, '[data-marker="item-view/item-id"]').text
+                    print(id)
+                    data_item = driver.find_element(By.CSS_SELECTOR, '[data-marker="item-view/item-date"]').text
+                    print(data_item)
+                    view = driver.find_element(By.CSS_SELECTOR, '[data-marker="item-view/total-views"]').text
+                    print(view)
+
+                    # Обработка информации о продавце
+                    top_rating = process_seller(driver)
+
+                    # Запись в csv
+
+                    data_save.append([name_ad, id, data_item, view, top_rating])
+                    time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
+                    driver.close()
+                    driver.switch_to.window(driver.window_handles[0])
+                    time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
+                    if top_rating != "Не кликается":
+                        save_to_csv(data_save)
+            except Exception as ex:
+                print("Ошибка при проходе по страницам")
+                print(ex)
+
     except Exception as ex:
         print(ex)
+
     finally:
         driver.close()
         driver.quit()
@@ -129,7 +143,7 @@ def process_seller(driver):
         return "Не кликается"
 
 def main():
-    url = 'https://www.avito.ru/moskva?q=пылеотвод'
+    url = 'https://www.avito.ru/moskva/predlozheniya_uslug/oborudovanie_proizvodstvo/proizvodstvo_obrabotka-ASgBAgICAkSYC7SfAaALiKAB?cd=1&p=1&q=3d+печать'
     open_page = get_url(url)
     parse_page(open_page)
 
