@@ -28,7 +28,7 @@ def get_data(url):
         dth = dth.text.strip()
         table_head.append(dth)
 
-    with open(file='data.csv', mode='w') as file:
+    with open(file='3d.csv', mode='w') as file:
         writer = csv.writer(file)
 
         writer.writerow(

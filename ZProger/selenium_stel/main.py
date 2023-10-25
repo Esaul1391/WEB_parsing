@@ -5,7 +5,7 @@ import time
 
 options = webdriver.ChromeOptions()
 options.add_argument("start-maximized")
-
+chrome_path='/usr/local/bin/google-chrome'
 # options.add_argument("--headless")
 
 options.add_experimental_option("excludeSwitches", ["enable-automation"])
@@ -26,7 +26,7 @@ for page in range(1, 4):
         domain = "https://www.russiadiscovery.ru/"
         url = f"https://www.russiadiscovery.ru/tours/trekkingi/page/{page}/"
         driver.get(url) # перехожу на указанную страницу
-        blocks = driver.find_element(By.CLASS_NAME, "d-catalog__cards-group")
+        # blocks = driver.find_element(By.CLASS_NAME, "d-catalog__cards-group")
         # posts = blocks.find_elements(By.TAG_NAME, "d-catalog__card")
         # for post in posts:
         #     title = post.find_element(By.CLASS_NAME, 'd-catalog__card-image d-catalog__card-image_shadow').find_element(By.TAG_NAME, "a").get_attribute('href')

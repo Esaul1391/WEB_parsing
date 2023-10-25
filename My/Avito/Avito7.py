@@ -1,4 +1,5 @@
-import undetected_chromedriver as uc
+from selenium import webdriver
+from selenium_stealth import stealth
 from selenium.webdriver.common.by import By
 from fake_useragent import UserAgent
 from selenium.webdriver.common.action_chains import ActionChains
@@ -10,7 +11,7 @@ import os
 
 # Устанавливаем случайное время ожидания между запросами
 min_delay = 1  # Минимальное время задержки в секундах
-max_delay = 30  # Максимальное время задержки в секундах
+max_delay = 6  # Максимальное время задержки в секундах
 
 
 def scroll_to_element(driver, element):
@@ -38,11 +39,23 @@ def save_to_csv(data):
 def get_url(url):
     useragent = UserAgent()
 
-    options = uc.ChromeOptions()
-    options.add_argument(f"user-agent={useragent.random}")
-    options.add_argument("--disable-blink-features=AutomationControlled")
+    options = webdriver.ChromeOptions()
+    options.add_argument("start-maximized")
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
+    # options.add_argument(f"user-agent={useragent.random}")
+    # options.add_argument("--disable-blink-features=AutomationControlled")
     # options.add_argument('--headless')
-    driver = uc.Chrome(options=options)
+    options.add_argument('--no-sandbox')
+    driver = webdriver.Chrome(options=options)
+    stealth(driver,
+            languages=["en-US", "en"],
+            vendor="Google Inc.",
+            platform="Win32",
+            webgl_vendor="Intel Inc.",
+            renderer="Intel Iris OpenGL Engine",
+            fix_hairline=True,
+            )
     driver.get(url)
 
     return driver

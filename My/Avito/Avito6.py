@@ -48,20 +48,15 @@ def get_url(url):
     return driver
 
 
+
 def parse_page(driver):
-
+    count = 0
     try:
-        pagination = int(driver.find_elements(By.CLASS_NAME, 'styles-module-text-InivV')[-1].text)
-
-        time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
-        print(pagination)
-
-        for item in range(1, pagination):
-            print('*' * 10, f"page {item} from pages {pagination}")
-            url = f"https://www.avito.ru/moskva/predlozheniya_uslug/oborudovanie_proizvodstvo/proizvodstvo_obrabotka-ASgBAgICAkSYC7SfAaALiKAB?cd=1&p={item}&q=3d+печать"
-            driver.get(url)
-
-            # прохожусь по объявлениям
+        while True:
+            count+=1
+            print(" ")
+            print('*'*20, f"  page {count}   ", '*'*20)
+            print(' ')
             try:
                 names = driver.find_elements(By.XPATH, "//h3[@itemprop='name']")
                 for name in names:  # Изменено на обработку только первой записи
@@ -93,6 +88,14 @@ def parse_page(driver):
                     time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
                     if top_rating != "Не кликается":
                         save_to_csv(data_save)
+
+                try:
+                    # Используем CSS селектор для кнопки "Следующая страница"
+                    driver.find_element(By.CSS_SELECTOR, '[data-marker="pagination-button/nextPage"]').click()
+                    time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
+                except Exception as e:
+                    print(e)
+                    break  # Выход из цикла при отсутствии кнопки "Следующая страница"
             except Exception as ex:
                 print("Ошибка при проходе по страницам")
                 print(ex)
@@ -143,7 +146,7 @@ def process_seller(driver):
         return "Не кликается"
 
 def main():
-    url = 'https://www.avito.ru/moskva/predlozheniya_uslug/oborudovanie_proizvodstvo/proizvodstvo_obrabotka-ASgBAgICAkSYC7SfAaALiKAB?cd=1&p=1&q=3d+печать'
+    url = 'https://www.avito.ru/all?q=JTC4763+Фиксатор+распредвала'
     open_page = get_url(url)
     parse_page(open_page)
 

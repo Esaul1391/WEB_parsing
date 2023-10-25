@@ -19,10 +19,10 @@ def scroll_to_element(driver, element):
     actions.perform()
 
 def save_to_csv(data):
-    file_exists = os.path.isfile('data.csv')
+    file_exists = os.path.isfile('3d.csv')
 
     # Открываем CSV файл для записи (если он не существует, он будет создан)
-    with open('data.csv', mode='a', newline='', encoding='utf-8') as file:
+    with open('3d.csv', mode='a', newline='', encoding='utf-8') as file:
         # Создаем объект writer для записи данных в файл
         writer = csv.writer(file)
 
@@ -41,7 +41,7 @@ def get_url(url):
     options.add_argument(f"user-agent={useragent.random}")
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument('--headless')
-    driver = uc.Chrome(version_main=117, options=options)
+    driver = uc.Chrome(options=options)
     driver.get(url)
 
     return driver
