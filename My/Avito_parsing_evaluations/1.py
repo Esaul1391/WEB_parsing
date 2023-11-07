@@ -1,3 +1,4 @@
+from collections import defaultdict
 from selenium import webdriver
 from selenium_stealth import stealth
 from selenium.webdriver.common.by import By
@@ -65,6 +66,7 @@ def get_url():
 
 def parser_evaluation(driver, url):
     rating_list = []
+    rating_dikt = defaultdict(int)
     driver.get(url)
     time.sleep(random.uniform(min_delay, max_delay))  # Случайная задержка
     while True:
@@ -84,6 +86,9 @@ def parser_evaluation(driver, url):
 
         # Преобразуем элементы в их текстовое представление перед подсчетом
         element_texts = [rating_list.append(element.text) for element in desktop_elements]
+        for element in desktop_elements:
+            rating_dikt[element.text]+=1
+    print(sorted(rating_dikt.items(),key=lambda item: item[1], reverse=True))
     element_counts = Counter(rating_list)
 
     # Находим три самых повторяющихся элемента
@@ -102,7 +107,7 @@ def parser_evaluation(driver, url):
 
 
 def main():
-    url = 'https://www.avito.ru/user/b81b1819648b50193033d276f9998f34/profile/all?src=fs&page_from=from_favorite_sellers&sellerId=b81b1819648b50193033d276f9998f34'
+    url = 'https://www.avito.ru/user/af09798cca3c2477ec9881cda9d3699b/profile?id=2844385983&src=item&page_from=from_item_card_button&iid=2844385983#open-reviews-list'
     open_page = get_url()
     parser_evaluation(open_page, url)
 
